@@ -1,0 +1,14 @@
+;;; Visual LISP make file [V1.0] ecoflight saved to:[C:/fly/aaaaa] at:[10/8/15] 
+(PRV-DEF (:target . "ecoflight.VLX")
+	 (:active-x . T)
+	 (:separate-namespace)
+	 (:protected . T)
+	 (:load-file-list
+	   (:lsp "C:/Users/delko_000/Desktop/fly/eco2.lsp")
+	 )
+	 (:require-file-list)
+	 (:ob-directory)
+	 (:tmp-directory)
+	 (:optimization . st)
+)
+;; EOF

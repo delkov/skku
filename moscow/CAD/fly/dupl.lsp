@@ -1,0 +1,5 @@
+(defun rem_list (lst)
+  (if (car lst)
+    (cons (car lst) (rem_list (vl-remove (car lst) (cdr lst))))
+  )
+)

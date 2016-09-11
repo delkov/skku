@@ -1,0 +1,16 @@
+;;; ???? ???????? ?????? Visual LISP [V1.0] ecos saved to:[C:/fly] at:[9/26/15] 
+(PRV-DEF (:target . "ecos.VLX")
+	 (:active-x . T)
+	 (:separate-namespace)
+	 (:protected . T)
+	 (:load-file-list
+	   (:lsp "C:/Users/delko_000/Desktop/fly/eco2.lsp")
+	 )
+	 (:require-file-list
+	   (:lsp "C:/Users/delko_000/Desktop/fly/dample.dcl")
+	 )
+	 (:ob-directory)
+	 (:tmp-directory)
+	 (:optimization . st)
+)
+;; EOF

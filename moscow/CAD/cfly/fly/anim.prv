@@ -1,0 +1,14 @@
+;;; Visual LISP make file [V1.0] anim saved to:[C:/fly/new_up] at:[11/3/15] 
+(PRV-DEF (:target . "anim.VLX")
+	 (:active-x . T)
+	 (:separate-namespace)
+	 (:protected . T)
+	 (:load-file-list
+	   (:lsp "C:/Users/delko_000/Desktop/fly/eco3.lsp")
+	 )
+	 (:require-file-list (:lsp "C:/fly/dample3.dcl"))
+	 (:ob-directory)
+	 (:tmp-directory)
+	 (:optimization . st)
+)
+;; EOF

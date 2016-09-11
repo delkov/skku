@@ -1,0 +1,253 @@
+;;;;; DEFINE FUNCTION ;;;;;;;;
+(defun c:sper(/ spSet ptLst Dr Ang sCurve oldEcho
+          oldOsm dataLst fPt radius Ans)
+
+;;;;; BEGIN_ACTIVE_X ;;;;;;;;;
+(defun begin_activex ( / )
+  (vl-load-com)
+  (setq acad_application (vlax-get-acad-object))
+  (setq active_document (vla-get-ActiveDocument acad_application))
+  (setq model_space (vla-get-ModelSpace active_document))
+  (setq paper_space (vla-get-PaperSpace active_document))
+); 
+;;;;; ERROR FUNCTION ;;;;;;;;;
+    (defun *error* (msg)
+    (setvar "CMDECHO" oldEcho)
+    (setvar "OSMODE" oldOsm)
+    (princ)
+    ); end of *error*
+
+;;;;; DRAWING SETING ;;;;;;;;;
+    (setq oldEcho(getvar "CMDECHO")
+          oldOsm(getvar "OSMODE")
+          ); end setq
+    (setvar "CMDECHO" 0)
+
+
+
+(setq
+  file_list (vl-directory-files "c:\\Users\\delko_000\\Desktop\\fly\\data" "*" 1)
+  file_name_list (mapcar 'vl-filename-base file_list)
+); setq
+
+
+
+
+
+
+
+
+
+
+
+
+
+(princ "\n<<< Select Spline >>>")
+  (if (setq spSet (ssget  '((0 . "SPLINE")))) 
+
+    
+    (progn
+    ;(foreach temp_spline spSet
+
+      (setq
+        count_spline (sslength spSet)
+        temp_number 0
+      ); setq  
+      (setq total_region nil) ;; after open
+      (repeat count_spline
+
+
+
+      ;   (setq tests  (+ tests 1))
+      ;)
+
+      (setq 
+       ; ptLst 
+       ;  (mapcar 'cdr
+       ;   (vl-remove-if
+       ;        '(lambda(x)(/= (car x) 11))
+       ;          (entget(ssname spSet 0))))
+       
+       sCurve(vlax-ename->vla-object(ssname spSet temp_number))
+       dataLst '()
+       end_point nil
+       start_point nil
+       temp_number (+ temp_number 1)
+      ); end setq
+      (setvar "OSMODE" 0)
+ 
+      (setq
+        radius_length '()
+        counter_test 1
+        step 10
+        temp_length 0
+        point_list (list )
+        spline_length (vlax-curve-getDistAtPoint sCurve (vlax-curve-getEndPoint sCurve))
+        true_count (/ spline_length step)
+        ok_point 1
+      ); setq
+
+
+      (setq
+        ff (open "C:\\Users\\delko_000\\Desktop\\temp.txt" "r")
+        trash_line (read-line ff)
+      ); setq
+
+
+      (while (and (> ok_point 0) (< counter_test true_count))
+        (setq probe_line (read-line ff))
+
+        (if (= probe_line ())
+          (setq ok_point 0)
+        )
+
+        (if (/= probe_line ())
+          (progn
+            (setq temp_radius (atoi probe_line))
+            (setq counter_test (+ counter_test 1))
+            (setq temp_length (+ temp_length step))
+            (setq point_list (append point_list (list  (vlax-curve-getPointAtDist sCurve temp_length)))) 
+            (setq radius_length (append radius_length (list temp_radius)))
+          ); progn
+        ); if
+      ); while
+
+      (foreach pt point_list
+        (setq
+          Dr(vlax-curve-getFirstDeriv sCurve (vlax-curve-getParamAtPoint sCurve pt))
+          Ang(- pi(atan(/(car Dr)(cadr Dr))))
+          dataLst(append dataLst (list(list(trans pt 0 1) Ang))); 
+        ); end setq
+      ); end foreach
+  
+      (setq counter 0)
+     
+      (while dataLst
+        (setq 
+          fPt(caar dataLst)
+          Ang(cadar dataLst)
+          radius(car radius_length)
+        ); end setq
+
+        (if (= counter 0)  
+          (progn
+            (setq double_der (vlax-curve-getFirstDeriv sCurve (vlax-curve-getParamAtPoint sCurve fPt)));
+
+            (if (> (cadr double_der) 0)
+              (progn
+                (command "_.line" fPt 
+                (trans(polar fPt  (+ Ang 0.78)  radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq start_angle_point (list (vlax-curve-getEndPoint temp_line)))
+
+                (command "_.line" fPt 
+                (trans(polar fPt   (+ Ang 1.56)   radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq med_angle_point (list (vlax-curve-getEndPoint temp_line)))
+
+                (command "_.line" fPt 
+                (trans(polar fPt  (+ Ang 2.34)  radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq end_angle_point (list (vlax-curve-getEndPoint temp_line)))
+              ); progn   
+            ); if
+
+            (if (<= (cadr double_der) 0)
+              (progn
+                (command "_.line" fPt 
+                (trans(polar fPt  (- Ang 2.34)  radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq start_angle_point (list (vlax-curve-getEndPoint temp_line)))
+
+                (command "_.line" fPt 
+                (trans(polar fPt   (- Ang 1.56)   radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq med_angle_point (list (vlax-curve-getEndPoint temp_line)))
+
+                (command "_.line" fPt 
+                (trans(polar fPt  (- Ang 0.78)  radius)0 1)"")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq end_angle_point (list (vlax-curve-getEndPoint temp_line)))
+              ); progn
+            ) ; if
+          ); progn
+        ); if
+
+        (if radius
+          (progn
+            (if (< (cadr (vlax-curve-getFirstDeriv sCurve (vlax-curve-getParamAtPoint sCurve fPt))) 0)
+              (progn
+                (command "_.line" fPt (trans(polar fPt Ang radius)0 1) (trans(polar fPt (- Ang Pi) radius)0 1) "")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq end_point (append end_point (list (vlax-curve-getEndPoint temp_line))))  
+                (setq start_point (append start_point (list (vlax-curve-getStartPoint temp_line))))
+              )
+            ); end if
+
+            (if (>= (cadr (vlax-curve-getFirstDeriv sCurve (vlax-curve-getParamAtPoint sCurve fPt))) 0)
+              (progn
+                (command "_.line" fPt (trans(polar fPt Ang radius)0 1) (trans(polar fPt (- Ang Pi) radius)0 1) "")
+                (setq temp_line (vlax-ename->vla-object (entlast)))
+                (setq end_point (append end_point (list (vlax-curve-getStartPoint temp_line))))  
+                (setq start_point (append start_point (list (vlax-curve-getEndPoint temp_line))))
+              ); progn
+            ); end if
+          ); progn
+        ); if
+    ;(initget "Yes No")
+    ;(setq Ans(getkword "\n>>> Mirror line? [Yes/No] <No>: "))
+    ;(if(null Ans)(setq Ans "No"))
+    ;(if(= Ans "Yes")
+     ; (progn
+      ;  (command "_.erase" (entlast) "")
+       ; (command "_.line" fPt
+        ; (trans(polar fPt(- Ang Pi)radius)0 1)"")
+        ;); end progn
+      ;); end if
+
+
+        (setq 
+          dataLst (cdr dataLst)
+          radius_length (cdr radius_length)
+        ); setq
+        (if (not dataLst)
+          (princ "\n*** End of Spline. Quit. ***")
+        ); if
+        (setq counter (+ counter 1))
+      ); end while
+     
+     (if (= ok_point 1)
+        (setq point_list (append point_list (list (vlax-curve-getEndPoint sCurve))))
+     ); if
+
+      (close ff)
+      (setq ff nil)
+
+
+      (setq total_point (append med_angle_point end_angle_point start_point (reverse end_point) start_angle_point med_angle_point))
+
+
+      (entmake
+       (append (list '(0 . "SPLINE") '(100 . "AcDbEntity") '(100 . "AcDbSpline") '(70 . 40) '(71 . 3) (cons 74 (length total_point)) '(44 . 1.0e-005))
+         (mapcar '(lambda (x) (cons 11 x)) total_point)
+       ); append
+      ); entmake
+      (command "region" (entlast) "")
+      (setq total_region (append total_region (list (entlast))))
+
+      ); end repeat
+
+      (command "_.UNION")
+      (apply 'command total_region);
+      (command "")
+
+     ; (setq proba (entlast));
+      ); end progn
+    ); end if
+
+
+
+    (setvar "CMDECHO" oldEcho)
+    (setvar "OSMODE" oldOsm)
+  (princ)
+  ); end of c:sper

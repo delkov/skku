@@ -1,0 +1,12 @@
+;;; Visual LISP make file [V1.0] test saved to:[C:/Users/delko_000/Desktop/fly] at:[7/25/15] 
+(PRV-DEF (:target . "test.VLX")
+	 (:active-x . T)
+	 (:separate-namespace)
+	 (:protected . T)
+	 (:load-file-list (:lsp "test14.lsp"))
+	 (:require-file-list)
+	 (:ob-directory)
+	 (:tmp-directory)
+	 (:optimization . st)
+)
+;; EOF

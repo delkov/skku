@@ -1,0 +1,14 @@
+;;; Visual LISP make file [V1.0] fly_new saved to:[C:/fly/fly_new] at:[11/29/15] 
+(PRV-DEF (:target . "fly_new.VLX")
+	 (:active-x . T)
+	 (:separate-namespace)
+	 (:protected . T)
+	 (:load-file-list
+	   (:lsp "C:/Users/delko_000/Desktop/fly/eco8.lsp")
+	 )
+	 (:require-file-list (:lsp "C:/fly/dample.dcl"))
+	 (:ob-directory)
+	 (:tmp-directory)
+	 (:optimization . st)
+)
+;; EOF
