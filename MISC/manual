@@ -1,0 +1,29 @@
+https://habrahabr.ru/post/31326/
+autojump
+smart cd (http://stackoverflow.com/questions/1030182/how-do-i-change-bash-history-completion-to-complete-whats-already-on-the-line)
+setup hotkeys
+workrave via startup applications (command workrave &)
+thunderbird + Add-on (minimize to tray) via startup + thunderbird converstaion ()see folder screen) +compat header
+xflux (https://github.com/xflux-gui/xflux-gui)
+xflux -l 37.266667 -g 127.016667
+
+
+git:
+https://git-scm.com/book/ru
+http://zencoder.ru/git/github-and-git/
+git add -u //update
+git add
+git status
+git commit -m "ok"
+git remote -v
+git remote show 
+git pull
+git push
+
+
+sublime:
+package manaeger
+sidebar
+anaconda
+brackethighter
+todo-list
