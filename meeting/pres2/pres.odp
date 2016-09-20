@@ -1,0 +1,38 @@
+GIT:
+
+git init
+
+echo "hello, woldr" > hello.txt
+cat hello.txt
+gs
+gc -m "add hello.txt"
+
+git branch galaxy 
+go galaxy
+echo "hello, galaxy" > hello.txt
+cat hello.txt
+gs
+gc -m "add hello.txt"
+
+go master
+cat hello.txt
+
+echo "new_file" > new_file.txt
+l
+git log
+
+
+git reset --hard [commit] // back
+
+
+
+
+show github:
+
+
+$ git clone  // opensource
+
+git push 
+
+git pull
+
