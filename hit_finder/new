@@ -10,7 +10,7 @@ import numpy as np
 
 if __name__ == "__main__":
     if len (sys.argv) > 1:
-    	print(sys.argv[1])
+    	# print(sys.argv[1])
         # print ("Привет, {}!".format (sys.argv[1] ) )
     	pass
     else:
@@ -63,18 +63,21 @@ def move(IM_A, point):
 	else:
 		return False
 
-width = 48
-length = 48
-filter_side_square = int(sys.argv[2]) or 8  # max_size ** 2
 
-coordinates = list(product(range(width), range(length)))
-print(coordinates)
+filter_side_square = int(sys.argv[1]) or 8  # max_size ** 2
+
+# print(coordinates)
 # OBTAIN IM_A via pifts [[1,2 3,...],[1,2,3...,5,6]]
 
-filename=sys.argv[1]
+filename=sys.argv[2]
 f = pyfits.open(str(filename))
 # data=f[0].data
 IM_A=f[0].data
+
+width = IM_A.shape[0]
+length = IM_A.shape[1]
+coordinates = list(product(range(width), range(length)))
+
 # print(len(IM_A))
 # print(IM_A[1])
 
@@ -109,7 +112,7 @@ list_of_paths = []  # all the pathes
 # ADD FRIST POINT IF HER PIXEL IS WHITE
 if IM_A[start_point[0]][start_point[1]] > 0:
 	temp_path.append(start_point)
-	print('ok')
+	# print('ok')
 # WHILE EXIST UNTOUCHABLE PIXEL
 while coordinates:
 	# obtain new point to path
@@ -132,10 +135,10 @@ while coordinates:
 			# for x in coordinates: i not
 			# 	coordinates.remove(x)
 
-i=1
-for pol in list_of_paths:
-	print('POL',i, pol)
-	i+=1
+# i=1
+# for pol in list_of_paths:
+# 	print('POL',i, pol)
+# 	i+=1
 
 # print(list_of_paths)
 
@@ -214,15 +217,15 @@ real_total_list=[x for x in total_list if filter(x,filter_side_square)]
 
 # # print(total_list)
 
-j=0
-for l in real_total_list:
-	j+=1
-	print('PATH',j, l)
+# j=0
+# for l in real_total_list:
+# 	j+=1
+# 	print('PATH',j, l)
 
 
 ## create matrix ##
 
-N = 48
+N = width
 # # L = [[(2,1)],[(1, 1), (1, 2), (1, 3), (3, 2)],[(3,3),(2,1)]]
 
 # # zero NxN matrix
@@ -256,12 +259,20 @@ for A in real_total_list:
 #     print(' '.join(map(str, row)))
 
 
+new_filename_txt=filename.replace('.fits','_')+'f_'+str(8)+time.strftime("%d%m%y_%H%M%S")+'.txt'
+
+f = open(new_filename_txt, 'w')
+for i in range(N):
+	for j in range(N):
+
+		f.write(str(int(arr[i][j]))+'\n')
+	# print(arr[0])
 
 
 
-filename=time.strftime("%d%m%y_%H%M%S")
-pyfits.writeto(filename+'.fits', arr, checksum=True)
+new_filename=filename.replace('.fits','_')+'f_'+'8_'+time.strftime("%d%m%y_%H%M%S")+'.fits'
+pyfits.writeto(new_filename, arr, checksum=True)
 
-
+print(filename.replace('.fits',''))
 # NOW WE'VE GOT A LIST OF PATHS
 # print(list_of_paths)

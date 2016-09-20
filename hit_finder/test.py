@@ -16,8 +16,10 @@ image_file='1bits.fits'
 # image_data = fits.getdata(image_file)
 
 
-f = fits.open('1bits.fits')
+f = fits.open('test1.fits')
 data=f[0].data
+print(data.shape[1])
+
 print(data)
 # print(data[0,1])
 # assume the first extension is an image
